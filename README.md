@@ -84,5 +84,93 @@ mouble中引入工程则不需要在自己的工程另行配置，因此只需�
         maMapLocation.onDstory();
  }
 ```
+####（二）定位且在地图上标记
+  1、MapView配置参考前面调用即可
+ 
+  2、初始化即可无需另调用其它方法
+```java
+ AMapLocationInMap maMapLocation = new AMapLocationInMap(this, aMap);
+```
+```java
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+        //必须调用
+        maMapLocation.deactivate();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+         //必须调用
+        maMapLocation.onDstory();
+    }
+```
+  3、若要单独处理定位结果则
+```java
+   maMapLocation.setaMapLocationResultListener(new AMapLocationResultListener() {
+            @Override
+            public void onLocationResult(AMapLocation aMapLocation) {
+                
+            }
 
+            @Override
+            public void onLocationError(int code, String errMsg) {
+
+            }
+        });
+```
+####热点搜索（PoiSearch）
+  1、MapView配置参考前面即可
+  
+  2、初始化
+ ```java
+  aMapPoiSearch = new AMapPoiSearch(this,aMap);
+ ```
+  3、设置监听，监听搜索结果
+ ```java
+   aMapPoiSearch.setaMapPoiSearchListener(new AMapPoiSearchListener() {
+            @Override
+            public void onPoiSearchError(int code, String errMsg) {
+              //搜索错误，搜索结果为null也在这里返回
+            }
+
+            @Override
+            public void onPoiSuggestResult(List<SuggestionCity> list) {
+              //在指定城市未搜索到结果，返回其它城市的搜索结果
+            }
+
+            @Override
+            public void onInputtipsResult(List<String> list) {
+               //实时监听用户输入操作并提供搜索建议，这里返回这个结果
+                Log.i("MainActivity", list.size() + list.get(0));
+                mAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,list);
+                autoCompleteTextView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+ ```
+  4、POI搜索
+ ```java
+     /**
+     * 开启搜索
+     * @param keyWord  关键字
+     * @param type     搜索类型
+     * @param city     搜索城市，若为""则在全国范围搜索
+     * @param pageNum  搜索第几页
+     * @param pageSize 一页显示多少条结果
+     */
+   aMapPoiSearch.startPoiSearch(autoCompleteTextView.getText().toString(),"","北京",1,10);
+ ```
+5、搜索建议
+ 一般在TextWatcher中调用
+```java
+  /**
+     * 依据关键字提供搜索建议
+     * @param keyWord 关键字
+     * @param city  城市
+  */
+  aMapPoiSearch.startSuggestSearch(s.toString(),"北京");
+```

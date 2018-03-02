@@ -1,13 +1,13 @@
 # AMapTest
 高德地图Demo
-###工程配置
+### 工程配置
 mouble中引入工程则不需要在自己的工程另行配置，因此只需将Amap Mouble中的apiKey替换为自己申请的即可
 ```java
   <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="7da75c748c5e3ea7793e46e3ffd8eb76" />
 ```
-###MapView 调用
+### MapView 调用
   和百度地图相比高德地图的调用相对复杂，XML示例代码：
 ```xml
    <com.amap.api.maps.MapView
@@ -60,8 +60,8 @@ mouble中引入工程则不需要在自己的工程另行配置，因此只需�
     }
 ```
  
-###定位
-####（一）定位
+### 定位
+#### （一）定位
   仅获取当前地理位置，不显示Map
 ```java
   MaMapLocation maMapLocation = new MaMapLocation(this, new AMapLocationResultListener() {
@@ -84,7 +84,7 @@ mouble中引入工程则不需要在自己的工程另行配置，因此只需�
         maMapLocation.onDstory();
  }
 ```
-####（二）定位且在地图上标记
+#### （二）定位且在地图上标记
   1、MapView配置参考前面调用即可
  
   2、初始化即可无需另调用其它方法
@@ -122,7 +122,7 @@ mouble中引入工程则不需要在自己的工程另行配置，因此只需�
             }
         });
 ```
-####热点搜索（PoiSearch）
+#### 热点搜索（PoiSearch）
   1、MapView配置参考前面即可
   
   2、初始化
